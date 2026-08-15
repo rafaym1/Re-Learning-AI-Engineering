@@ -7,6 +7,7 @@ Learned FastAPI first, then PostgreSQL. Followed tutorials in order, cross-refer
 - [Hands-on build](https://www.youtube.com/watch?v=SR5NYCdzKkc&t=4276s)
 - [Basics overview](https://www.youtube.com/watch?v=n2Fluyr3lbc)
 - [4-part deep dive](https://www.youtube.com/watch?v=74IWNUja05w)
+- [Good guide on chatbot](https://dev.to/vipascal99/building-a-full-stack-ai-chatbot-with-fastapi-backend-and-react-frontend-51ph)
 
 **Project:** Simple chatbot with Hugging Face (you can find it in repo) good first project for backend-frontend connection.
 **Deploy options:** Backend; Render, Replit, HF Inference, GCP, Railway, RunPod. Frontend; Streamlit, Vercel.
