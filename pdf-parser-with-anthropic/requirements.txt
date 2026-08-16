@@ -1,0 +1,5 @@
+pdfplumber
+anthropic
+python-dotenv
+tenacity
+httpcore
