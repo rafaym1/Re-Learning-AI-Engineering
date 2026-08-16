@@ -7,7 +7,7 @@
 ```bash
 pip install -r requirements.txt
 cp .env.example .env   # add your Anthropic API key
-python step1.py
+python parser.py
 ```
 
-Set `pdf_path` in `step1.py` to a PDF in this folder before running.
+Set `pdf_path` in `parser.py` to a PDF in this folder before running.
