@@ -12,13 +12,13 @@ Learned FastAPI first, then PostgreSQL. Followed tutorials in order, cross-refer
 **Project:** Simple chatbot with Hugging Face (you can find it in repo) good first project for backend-frontend connection.
 **Deploy options:** Backend; Render, Replit, HF Inference, GCP, Railway, RunPod. Frontend; Streamlit, Vercel.
 
+### ✅ Phase 2 — LLM APIs (Day 4-5)
+Docs > courses here. [Anthropic docs](https://docs.claude.com) or OpenAI API docs. 
+Cover the building with Claude section for now. Talk to any LLM and understand the basic concepts like streaming response, tool/function calling, structured JSON output, retry-on-failure, cost tracking etc.
+**Project:** PDF Parser with Anthropic (you can find it in repo) good first mini project to understand the above mentioned concepts.
+
 ---
 *Remaining phases suggested by Claude — in progress, adding my own resources as I go.*
-
-### 🚧 Phase 2 — LLM APIs (1–2 weeks)
-Docs > courses here. [Anthropic docs](https://docs.claude.com) + OpenAI API docs.
-Build 5 scripts: streaming response, tool/function calling, structured JSON output, retry-on-failure, cost tracking.
-
 ### ⬜ Phase 3 — RAG (2–3 weeks)
 "RAG From Scratch" (LangChain, YouTube) for concepts. Use pgvector over Pinecone — free, builds on Postgres knowledge.
 **Project:** Chat over my AHXAI paper + other PDFs.
