@@ -68,7 +68,7 @@ def parse_invoice_with_claude(invoice_text):
             print(text, end="", flush=True)
             full_response += text
     print()
-    response = client.messages.create(...)
+    response = stream.get_final_message()
     cost = log_cost(response, label="extract_metadata")
     print(f"Query cost: ${cost:.6f}")
     return full_response
@@ -99,7 +99,6 @@ def extract_metadata_structured(paper_text):
         tool_choice={"type": "tool", "name": "record_metadata"},
         messages=[{"role": "user", "content": f"Extract metadata from this paper:\n{paper_text}"}],
     )
-    response = client.messages.create(...)
     cost = log_cost(response, label="extract_metadata")
     print(f"Query cost: ${cost:.6f}")
 
