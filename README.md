@@ -17,12 +17,12 @@ Docs > courses here. [Anthropic docs](https://docs.claude.com) or OpenAI API doc
 Cover the building with Claude section for now. Talk to any LLM and understand the basic concepts like streaming response, tool/function calling, structured JSON output, retry-on-failure, cost tracking etc.
 **Project:** PDF Parser with Anthropic (you can find it in repo) good first mini project to understand the above mentioned concepts.
 
+### ✅ Phase 3 — RAG (Day 6-7)
+Understand and build RAG from scratch. I recommend watching [LangChain YouTube playlist](https://www.youtube.com/watch?v=wd7TZ4w1mSw&list=PLfaIDFEXuae2LXbO1_PKyVJiQ23ZztA0x&index=1) ps the notebook included in the tutorial is a gem if you sit with it and read it thoroughly. Also refer to the official documentation. Use pgvector over Pinecone; free, builds on Postgres knowledge.
+**Project:** Rag from Scratch
+
 ---
 *Remaining phases suggested by Claude — in progress, adding my own resources as I go.*
-### ⬜ Phase 3 — RAG (2–3 weeks)
-"RAG From Scratch" (LangChain, YouTube) for concepts. Use pgvector over Pinecone — free, builds on Postgres knowledge.
-**Project:** Chat over my AHXAI paper + other PDFs.
-
 ### ⬜ Phase 4 — Agentic Workflows (2–3 weeks)
 [Anthropic's "Building Effective Agents"](https://www.anthropic.com/research/building-effective-agents) guide.
 Build one agent in LangGraph, rebuild same agent with raw loop + tool calls (no framework) — see what the framework hides.
@@ -34,4 +34,4 @@ Full stack (FastAPI + Streamlit/frontend, deployed live). Idea: AI tool for revi
 Different pattern than #1 (agent-heavy if #1 was RAG). Idea: automate part of my n8n lead-gen workflow.
 
 ### ⬜ Phase 7 — Portfolio + Apply (ongoing)
-3–4 line README per project: problem, stack, live link. Apply to "AI Engineer" / "Applied AI Engineer" on LinkedIn + Wellfound.
+3–4 line README per project: problem, stack, live link. Apply to "AI Engineer" / "Applied AI Engineer" on LinkedIn + Wellfound
