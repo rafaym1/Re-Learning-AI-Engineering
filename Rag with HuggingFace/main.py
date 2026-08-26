@@ -1,29 +1,17 @@
-from pathlib import Path
-
-from rag.chunking import chunk_text
-from rag.embeddings import embed_chunks, embed_query
-from rag.generation import generate_answer
-from rag.vector_store import VectorStore
+from rag.pipeline import RagPipeline
 
 
 def main():
-    text = Path("data/sample.txt").read_text()
-    chunks = chunk_text(text)
-    embeddings = embed_chunks(chunks)
+    pipeline = RagPipeline()
+    pipeline.index("data/sample.txt")
 
-    store = VectorStore()
-    store.add(chunks, embeddings)
-
-    query = "How do black holes form?"
-    query_embedding = embed_query(query)
-    results = store.search(query_embedding, top_k=2)
-
-    print(f"Query: {query}\n")
-    for i, chunk in enumerate(results, 1):
-        print(f"[{i}] {chunk}\n")
-
-    answer = generate_answer(query, results)
-    print(f"Answer: {answer}")
+    questions = [
+        "How do black holes form?",
+        "What causes rain?",
+    ]
+    for question in questions:
+        answer = pipeline.query(question, top_k=2)
+        print(f"Q: {question}\nA: {answer}\n")
 
 
 if __name__ == "__main__":
