@@ -2,6 +2,7 @@ from pathlib import Path
 
 from rag.chunking import chunk_text
 from rag.embeddings import embed_chunks, embed_query
+from rag.generation import generate_answer
 from rag.vector_store import VectorStore
 
 
@@ -20,6 +21,9 @@ def main():
     print(f"Query: {query}\n")
     for i, chunk in enumerate(results, 1):
         print(f"[{i}] {chunk}\n")
+
+    answer = generate_answer(query, results)
+    print(f"Answer: {answer}")
 
 
 if __name__ == "__main__":
