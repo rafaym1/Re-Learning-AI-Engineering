@@ -1,4 +1,4 @@
-from fdi.extraction import extract_financial_highlights
+from fdi.extraction import extract_financial_highlights_chunked
 from fdi.ingestion import ingest_vdr
 from fdi.knowledge_base import save_facts
 
@@ -19,7 +19,7 @@ def main():
     for doc in documents:
         if doc.category != "3 - Accounts":
             continue
-        highlights = extract_financial_highlights(doc)
+        highlights = extract_financial_highlights_chunked(doc)
         dest_path = save_facts(doc, "FinancialHighlight", highlights)
         print(f"  {doc.source_path} -> {dest_path} ({len(highlights)} facts)")
 
