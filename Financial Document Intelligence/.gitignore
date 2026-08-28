@@ -4,3 +4,4 @@ __pycache__/
 .env
 data/dev_vdr/
 data/knowledge_base/
+data/output/
