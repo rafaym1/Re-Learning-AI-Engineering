@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 import anthropic
 from dotenv import load_dotenv
@@ -74,6 +75,54 @@ def verify_section(section_text: str, context: str) -> list[UnverifiedClaim]:
     return response.parsed_output.unverified_claims
 
 
+NUMBER_PATTERN = re.compile(r"\$?-?\d[\d,]*\.?\d*(?:\s?(?:thousand|million|billion))?%?", re.IGNORECASE)
+UNIT_MULTIPLIERS = {"thousand": 1_000, "million": 1_000_000, "billion": 1_000_000_000}
+
+
+def _parse_numeric_claim(token: str) -> tuple[float, bool] | None:
+    """Parse a matched token into (canonical_value, is_percent), scaling million/billion/thousand to a common base."""
+    is_percent = token.rstrip().endswith("%")
+    lower = token.lower()
+    multiplier = next((factor for unit, factor in UNIT_MULTIPLIERS.items() if unit in lower), 1)
+
+    digits = re.sub(r"[^\d.\-]", "", token)
+    if not digits or digits in {"-", "."}:
+        return None
+    # A bare single digit with no currency/unit/percent is almost always structural (list numbering, "3 pillars").
+    if multiplier == 1 and not is_percent and len(digits.replace(".", "").replace("-", "")) <= 1:
+        return None
+    return float(digits) * multiplier, is_percent
+
+
+def find_numeric_claims(text: str) -> set[tuple[float, bool]]:
+    """Extract every numeric claim (dollar amount, percentage, plain number) from text as (value, is_percent) pairs."""
+    claims = (_parse_numeric_claim(token) for token in NUMBER_PATTERN.findall(text))
+    return {claim for claim in claims if claim is not None}
+
+
+def verify_numbers_in_context(
+    section_text: str, context: str, rel_tol: float = 0.01, percent_tol: float = 0.15
+) -> list[str]:
+    """Flag every numeric claim in section_text with no approximate match in context, after unit scaling.
+
+    A small tolerance accounts for legitimate rounding differences (e.g. a filing's "$1,324,144 thousand"
+    vs. prose's "$1,324.1 million" -- the same fact, rounded for readability).
+    """
+    claimed = find_numeric_claims(section_text)
+    available = find_numeric_claims(context)
+
+    unmatched = []
+    for value, is_percent in claimed:
+        tolerance = percent_tol if is_percent else abs(value) * rel_tol
+        match_found = any(
+            avail_is_percent == is_percent and abs(avail_value - value) <= tolerance
+            for avail_value, avail_is_percent in available
+        )
+        if not match_found:
+            unmatched.append(f"{value}{'%' if is_percent else ''}")
+    return sorted(unmatched)
+
+
 def generate_memo(business_context: str) -> str:
     """Generate a full memo, one section at a time, grounded in the extracted knowledge base and business context."""
     facts = load_category_facts("3 - Accounts")
@@ -87,7 +136,13 @@ def generate_memo(business_context: str) -> str:
 
         unverified = verify_section(section_text, context)
         if unverified:
-            print(f"  [{name}] {len(unverified)} unverified claim(s):")
+            print(f"  [{name}] {len(unverified)} unverified claim(s) (semantic check):")
             for issue in unverified:
                 print(f"    - {issue.claim} ({issue.reason})")
+
+        unmatched_numbers = verify_numbers_in_context(section_text, context)
+        if unmatched_numbers:
+            print(f"  [{name}] {len(unmatched_numbers)} number(s) not found in source (strict check):")
+            for number in unmatched_numbers:
+                print(f"    - {number}")
     return "\n".join(parts)
