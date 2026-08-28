@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from fdi.knowledge_base import load_category_facts
+from fdi.numbers import parse_scaled_number
 
 load_dotenv()
 
@@ -76,22 +77,20 @@ def verify_section(section_text: str, context: str) -> list[UnverifiedClaim]:
 
 
 NUMBER_PATTERN = re.compile(r"\$?-?\d[\d,]*\.?\d*(?:\s?(?:thousand|million|billion))?%?", re.IGNORECASE)
-UNIT_MULTIPLIERS = {"thousand": 1_000, "million": 1_000_000, "billion": 1_000_000_000}
 
 
 def _parse_numeric_claim(token: str) -> tuple[float, bool] | None:
     """Parse a matched token into (canonical_value, is_percent), scaling million/billion/thousand to a common base."""
     is_percent = token.rstrip().endswith("%")
-    lower = token.lower()
-    multiplier = next((factor for unit, factor in UNIT_MULTIPLIERS.items() if unit in lower), 1)
-
-    digits = re.sub(r"[^\d.\-]", "", token)
-    if not digits or digits in {"-", "."}:
-        return None
+    digits_only = re.sub(r"[^\d.\-]", "", token)
     # A bare single digit with no currency/unit/percent is almost always structural (list numbering, "3 pillars").
-    if multiplier == 1 and not is_percent and len(digits.replace(".", "").replace("-", "")) <= 1:
+    if not is_percent and "thousand" not in token.lower() and "million" not in token.lower() and "billion" not in token.lower():
+        if len(digits_only.replace(".", "").replace("-", "")) <= 1:
+            return None
+    value = parse_scaled_number(token)
+    if value is None:
         return None
-    return float(digits) * multiplier, is_percent
+    return value, is_percent
 
 
 def find_numeric_claims(text: str) -> set[tuple[float, bool]]:
