@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 from fdi.embeddings import embed_query
 from fdi.memo import verify_numbers_in_context, verify_section
+from fdi.reranker import rerank
 from fdi.vector_store import VectorStore
 
 load_dotenv()
@@ -19,10 +20,12 @@ def _build_context(results: list[dict]) -> str:
     return "\n\n".join(parts)
 
 
-def answer_question(question: str, store: VectorStore, top_k: int = 10) -> tuple[str, list[dict]]:
-    """Retrieve the most relevant chunks for a question and ask Claude to answer using only that context."""
+def answer_question(question: str, store: VectorStore, candidate_k: int = 30, top_k: int = 10) -> tuple[str, list[dict]]:
+    """Retrieve a wide candidate pool by embedding similarity, rerank it for actual relevance, then ask Claude
+    to answer using only the reranked context."""
     query_embedding = embed_query(question)
-    results = store.search(query_embedding, top_k=top_k)
+    candidates = store.search(query_embedding, top_k=candidate_k)
+    results = rerank(question, candidates, top_k=top_k)
     context = _build_context(results)
 
     prompt = (
