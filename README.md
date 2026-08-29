@@ -21,17 +21,17 @@ Cover the building with Claude section for now. Talk to any LLM and understand t
 Understand and build RAG from scratch. I recommend watching [LangChain YouTube playlist](https://www.youtube.com/watch?v=wd7TZ4w1mSw&list=PLfaIDFEXuae2LXbO1_PKyVJiQ23ZztA0x&index=1) ps the notebook included in the tutorial is a gem if you sit with it and read it thoroughly. Also refer to the official documentation. Use pgvector over Pinecone; free, builds on Postgres knowledge.
 **Project:** Rag with HuggingFace
 
----
+### ✅ Phase 4 — Ship Product #1 (Day 7-14)
+Develop a scalable and sellable product. The best way to find a project worth learning and investing your full attention is to browse freelance websites. You will find projects with detailed requirements. Pick any relevant to your interest and start building with AI. Do not ask AI to build it for you, ask it to guide you and help you understand each and every step from planning to stack decision and beyond. AI can be a great teacher if used the right way. 
+I choose to build a sellable financially intelligent system [Repo here](https://github.com/rafaym1/Re-Learning-AI-Engineering/tree/main/Financial%20Document%20Intelligence)
+
 *Remaining phases suggested by Claude — in progress, adding my own resources as I go.*
-### ⬜ Phase 4 — Agentic Workflows (2–3 weeks)
+### ⬜ Phase 5 — Agentic Workflows (2–3 weeks)
 [Anthropic's "Building Effective Agents"](https://www.anthropic.com/research/building-effective-agents) guide.
 Build one agent in LangGraph, rebuild same agent with raw loop + tool calls (no framework) — see what the framework hides.
 
-### ⬜ Phase 5 — Ship Product #1 (3–4 weeks)
-Full stack (FastAPI + Streamlit/frontend, deployed live). Idea: AI tool for reviewing papers/citations.
-
 ### ⬜ Phase 6 — Ship Product #2 (3–4 weeks)
-Different pattern than #1 (agent-heavy if #1 was RAG). Idea: automate part of my n8n lead-gen workflow.
+Full stack (FastAPI + Streamlit/frontend, deployed live). Idea: AI tool for reviewing papers/citations.
 
 ### ⬜ Phase 7 — Portfolio + Apply (ongoing)
 3–4 line README per project: problem, stack, live link. Apply to "AI Engineer" / "Applied AI Engineer" on LinkedIn + Wellfound
