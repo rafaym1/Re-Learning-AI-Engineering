@@ -10,4 +10,9 @@ def parse_scaled_number(text: str) -> float | None:
     digits = re.sub(r"[^\d.\-]", "", text)
     if not digits or digits in {"-", "."}:
         return None
-    return float(digits) * multiplier
+    try:
+        return float(digits) * multiplier
+    except ValueError:
+        # Extraction artifacts occasionally leave a malformed remainder (e.g. a stray trailing
+        # "-"), which float() rejects -- treat as unparseable rather than crashing the caller.
+        return None
