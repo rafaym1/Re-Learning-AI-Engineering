@@ -4,9 +4,10 @@ import anthropic
 from dotenv import load_dotenv
 
 from fdi.embeddings import embed_query
-from fdi.memo import verify_numbers_in_context, verify_section
+from fdi.memo import verify_section
 from fdi.reranker import rerank
 from fdi.vector_store import VectorStore
+from fdi.verification import verify_numbers_in_context
 
 load_dotenv()
 
