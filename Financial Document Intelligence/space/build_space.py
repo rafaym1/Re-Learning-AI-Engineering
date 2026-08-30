@@ -24,7 +24,18 @@ FDI_MODULES = [
     "verification.py",
     "numbers.py",
     "rate_limit.py",
+    "reports.py",
+    "knowledge_base.py",
+    "schema.py",
     "__init__.py",
+]
+
+# Source VDR filings bundled so visitors can open/download and verify the system's work directly.
+SOURCE_DOCUMENTS = [
+    "1 - Corporate Matters/2025-03-26_DEF_14A_plnt-20250326.htm",
+    "1 - Corporate Matters/2026-03-25_DEF_14A_plnt-20260325.htm",
+    "3 - Accounts/2025-02-25_10-K_plnt-20241231.htm",
+    "3 - Accounts/2026-02-25_10-K_plnt-20251231.htm",
 ]
 
 
@@ -49,6 +60,23 @@ def main():
             np.save(index_dist / path.name, embeddings)
         else:
             shutil.copy2(path, index_dist / path.name)
+
+    # Extracted facts the Reports tab charts, and the pre-generated memo the Memo tab reveals --
+    # both real output from the real pipeline, just not regenerated live on every visitor click.
+    kb_dist = DIST_DIR / "data" / "knowledge_base" / "3 - Accounts"
+    kb_dist.mkdir(parents=True)
+    for path in (ROOT / "data" / "knowledge_base" / "3 - Accounts").iterdir():
+        shutil.copy2(path, kb_dist / path.name)
+
+    output_dist = DIST_DIR / "data" / "output"
+    output_dist.mkdir(parents=True)
+    shutil.copy2(ROOT / "data" / "output" / "memo.md", output_dist / "memo.md")
+
+    vdr_dist = DIST_DIR / "data" / "dev_vdr"
+    for rel_path in SOURCE_DOCUMENTS:
+        dest = vdr_dist / rel_path
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / "data" / "dev_vdr" / rel_path, dest)
 
     for name in ("app.py", "llm.py", "requirements.txt", "README.md"):
         shutil.copy2(SPACE_DIR / name, DIST_DIR / name)
